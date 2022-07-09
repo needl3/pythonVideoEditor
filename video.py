@@ -108,7 +108,3 @@ def concatenateVideo(context):
 		context["concat"].append(_id)
 		if input("Add more?(y/n)").lower() == "n":
 			break
-
-
-
-

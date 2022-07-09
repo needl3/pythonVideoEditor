@@ -4,7 +4,7 @@ import os
 from video import addVideo, concatenateVideo, clipVideo
 from audio import addAudio
 from render import render
-from filter import applyFilter
+from filter import applyFilter, resizeClip
 
 from moviepy.editor import VideoFileClip
 
@@ -46,7 +46,7 @@ def menu():
             print(str(i+1) + ": "+op[i])
             i+=1
 
-        _ = int(input("Enter an option: \n=>"))
+        _ = int(input("\nEnter an option: \n=>"))
         while(not _ or _ < 1 or _ > len(op)+1):
             _ = int(input("Invalid option. Enter again\n=>"))
 
@@ -69,7 +69,6 @@ def menu():
             "portion": [20, 30],
             "clip": selected.subclip(20, 30)
         }
-
         match _:
             case 1:
                 addVideo(context)
