@@ -10,7 +10,8 @@ def addVideo():
 	while True:
 		os.system("clear")
 
-		o = ["Import from disk", "Import from YouTube", "Import from TikTok", "Import from Instagram", "Import from Facebook", "Back"]
+		o = ["Import from disk", "Import from YouTube", "Import from TikTok", "Back"]
+#		o = ["Import from disk", "Import from YouTube", "Import from TikTok", "Import from Instagram", "Import from Facebook", "Back"]
 
 		_ = displayOptions(o, "Import Videos")
 
@@ -24,10 +25,10 @@ def addVideo():
 				path = downloadFromYT(import_name)
 			case 3:
 				path = downloadFromTiktok(import_name)
-			case 4:
-				path = downloadFromInstagram(import_name)
-			case 5:
-				path = downloadFromFacebook(import_name)
+			# case 4:
+			# 	path = downloadFromInstagram(import_name)
+			# case 5:
+			# 	path = downloadFromFacebook(import_name)
 			case _:
 				return
 

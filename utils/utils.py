@@ -150,10 +150,11 @@ def clearData(debug = False):
 		os.system("clear")
 
 def displayOptions(op, title):
-	print(title.center(40, "-"))
+	PADDING = 60
+	print(title.center(PADDING, "-"))
 	i=0
 	while i < len(op):
-		print(str(i+1) + ": " + op[i].ljust(20, " "), end="")
+		print(str(i+1) + ": " + op[i].ljust(int(PADDING*0.7), " "), end="")
 		if i < len(op)-1:
 			i += 1
 		else:
@@ -162,7 +163,7 @@ def displayOptions(op, title):
 		i+=1
 
 	_ = None
-	print("\n"+"".center(40, "-")+"\n")
+	print("\n"+"".center(PADDING, "-")+"\n")
 	while(not _ or _ < 1 or _ > len(op)+1):
 		try:
 			_ = int(input("Enter valid option\n=>"))
