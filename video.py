@@ -4,19 +4,19 @@ from utils.utils import parseDuration, displayOptions, chooseFile
 
 from utils.context import context
 from utils.videoDownloader import downloadFromYT, downloadFromTiktok, downloadFromInstagram
-
+from videoMaker import textToClip
 
 def addVideo():
 	while True:
 		os.system("clear")
 
-		o = ["Import from disk", "Import from YouTube", "Import from TikTok", "Back"]
+		o = ["Import from disk", "Import from YouTube", "Import from TikTok", "Create from Text", "Back"]
 #		o = ["Import from disk", "Import from YouTube", "Import from TikTok", "Import from Instagram", "Import from Facebook", "Back"]
 
 		_ = displayOptions(o, "Import Videos")
 
 		path = str()
-		if _ > 1 and _ < len(o):
+		if _ > 0 and _ < len(o):
 			import_name = input("Enter name for the import:\n=>")
 		match _:
 			case 1:
@@ -25,6 +25,14 @@ def addVideo():
 				path = downloadFromYT(import_name)
 			case 3:
 				path = downloadFromTiktok(import_name)
+			case 4:
+				path = textToClip(input("Enter text to render"),\
+					import_name,\
+					input("Enter background color(Default: Black)") or "#000000",\
+					input("Enter text color(Default: White)") or "#ffffff",\
+					input("Enter clip length in seconds(Default: 5s)") or 5,\
+					input("Enter font size(Default: 1)") or 1\
+					)
 			# case 4:
 			# 	path = downloadFromInstagram(import_name)
 			# case 5:

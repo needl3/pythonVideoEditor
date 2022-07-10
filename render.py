@@ -14,6 +14,7 @@ def render():
 
 	if not bool(clips):
 		print("No concatenated files to render. Maybe you forgot to add in concatenation queue?")
+		input("Press enter to go back...")
 		return 1
 
 	final = concatenate_videoclips(clips, method="compose")
