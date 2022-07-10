@@ -3,42 +3,19 @@ from moviepy.editor import VideoFileClip
 from utils.utils import parseDuration, displayOptions, chooseFile
 
 from utils.context import context
+from utils.videoDownloader import downloadFromYT, downloadFromTiktok, downloadFromInstagram
 
-
-
-def downloadFromYT(name):
-	name += ".mp4"
-	url = input("Enter youtube url:\n=>")
-	from pytube import YouTube
-	try:
-		print("Downloading... Please wait...")
-		yt = YouTube(url)
-	except:
-		print("[X] Connection Error")
-		return 1
-
-	try: 
-		yt.streams.filter(file_extension="mp4").first().download("downloaded_vids", name)
-		return os.path.abspath(f"downloaded_vids/{name}")
-	except Exception as e: 
-		print("[X] Download Error!", e) 
-		return None
-
-def downloadFromFacebook():
-	pass
-def downloadFromInstagram():
-	pass
 
 def addVideo():
 	while True:
 		os.system("clear")
 
-		o = ["Import from disk", "Import from YouTube", "Back"]
+		o = ["Import from disk", "Import from YouTube", "Import from TikTok", "Import from Instagram", "Import from Facebook", "Back"]
 
 		_ = displayOptions(o, "Import Videos")
 
 		path = str()
-		if _ != 3:
+		if _ > 1 and _ < len(o):
 			import_name = input("Enter name for the import:\n=>")
 		match _:
 			case 1:
@@ -46,6 +23,12 @@ def addVideo():
 			case 2:
 				path = downloadFromYT(import_name)
 			case 3:
+				path = downloadFromTiktok(import_name)
+			case 4:
+				path = downloadFromInstagram(import_name)
+			case 5:
+				path = downloadFromFacebook(import_name)
+			case _:
 				return
 
 		l_vids = context.get("videos")
