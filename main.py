@@ -5,7 +5,7 @@ from video import addVideo, concatenateVideo, clipVideo
 from audio import addAudio
 from render import render
 from filter import applyFilter, resizeClip
-from utils.utils import clearData, displayOptions
+from utils.utils import clearData, displayOptions, addTest
 
 from moviepy.editor import VideoFileClip
 
@@ -26,35 +26,10 @@ def dot(width, msg):
     print("\n")
 
 def menu():
-    op = ["Add Video", "Add Audio", "Clip", "Concatenate video", "Apply Filter", "Render", "Clear Data", "Exit"]
+    op = ["Add Video", "Add Audio", "Clip", "Concatenate video", "Apply Filter", "Render", "Clear Data", "Show Status", "Exit"]
 
-    # Adding videos for test
-    context["videos"][0] = {
-        "name": "hemlo",
-        "path": os.path.abspath("/home/needle/Downloads/example.mp4")
-    }
-    context["videos"][1] = {
-        "name": "hemlo",
-        "path": os.path.abspath("/home/needle/Downloads/example.mp4")
-    }
+    # addTest()
 
-    # Adding clips for test
-    selected = VideoFileClip(os.path.abspath("/home/needle/Downloads/example.mp4"))
-    context["clips"][0] = {
-        "_id": 0,
-        "portion": [10, 20],
-        "clip": selected.subclip(10, 20)
-    }
-    context["clips"][1] = {
-        "_id": 1,
-        "portion": [20, 30],
-        "clip": selected.subclip(20, 30)
-    }
-    # Adding audio for test
-    context["audio"][0] = {
-        "name": "myaudio",
-        "path": "/home/needle/Downloads/example.mp3"
-    }
     _ = None
     while _ != len(op):
         os.system("clear")

@@ -16,7 +16,7 @@ def render():
 		print("No concatenated files to render. Maybe you forgot to add in concatenation queue?")
 		return 1
 
-	final = concatenate_videoclips(clips)
+	final = concatenate_videoclips(clips, method="compose")
 	final_filename = OUT_DIR+\
 		datetime.datetime.today().strftime("%y_%m_%d_%H_%M_%S")+\
 		".mp4"

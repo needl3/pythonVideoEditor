@@ -7,6 +7,7 @@ from utils.context import context
 
 
 def downloadFromYT(name):
+	name += ".mp4"
 	url = input("Enter youtube url:\n=>")
 	from pytube import YouTube
 	try:
@@ -19,8 +20,8 @@ def downloadFromYT(name):
 	try: 
 		yt.streams.filter(file_extension="mp4").first().download("downloaded_vids", name)
 		return os.path.abspath(f"downloaded_vids/{name}")
-	except: 
-		print("[X] Download Error!") 
+	except Exception as e: 
+		print("[X] Download Error!", e) 
 		return None
 
 def downloadFromFacebook():
@@ -37,18 +38,21 @@ def addVideo():
 		_ = displayOptions(o, "Import Videos")
 
 		path = str()
+		if _ != 3:
+			import_name = input("Enter name for the import:\n=>")
 		match _:
 			case 1:
 				path = chooseFile()
 			case 2:
-				path = downloadFromYT()
+				path = downloadFromYT(import_name)
 			case 3:
 				return
 
-		_id = len(context.get("videos"))
+		l_vids = context.get("videos")
+		_id = list(l_vids.keys())[-1]+1 if bool(l_vids) else 0
 		if bool(path):
 			context["videos"][_id] = {
-				"name": input("Enter name for the import:\n=>"),
+				"name": import_name,
 				"path": path
 			}
 		else:
@@ -81,12 +85,15 @@ def clipVideo():
 	if not end:
 		end = selected.duration
 
-	context["clips"][len(context.get("clips"))] = {
+	l_clips = context.get("clips")
+	c_id = list(l_clips.keys())[-1]+1 if bool(l_clips) else 0
+	print(l_clips, c_id)
+	context["clips"][c_id] = {
 		"_id": _id,
 		"portion": [start, end],
 		"clip": selected.subclip(start, end)
 	}
-
+	print(context)
 	return 0
 
 def concatenateVideo():
@@ -97,7 +104,10 @@ def concatenateVideo():
 	while True:
 		_id = int(input("Select clip in sequence to concatenate:\n=>"))
 		while _id not in c.keys():
-			_id = int(input("Invalid id. Select again:\n=>"))
+			try:
+				_id = int(input("Invalid id. Select again:\n=>"))
+			except ValueError:
+				return
 		context["concat"].append(_id)
 		if input("Add more?(y/n)").lower() == "n":
 			break

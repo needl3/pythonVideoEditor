@@ -3,6 +3,35 @@ from utils.context import context
 import  tkinter as tk
 from tkinter import filedialog
 
+def addTest():
+	# Adding videos for test
+	context["videos"][0] = {
+		"name": "hemlo",
+		"path": os.path.abspath("/home/needle/Downloads/example.mp4")
+	}
+	context["videos"][1] = {
+		"name": "hemlo",
+		"path": os.path.abspath("/home/needle/Downloads/example.mp4")
+	}
+
+	# Adding clips for test
+	selected = VideoFileClip(os.path.abspath("/home/needle/Downloads/example.mp4"))
+	context["clips"][0] = {
+		"_id": 0,
+		"portion": [10, 20],
+		"clip": selected.subclip(10, 20)
+	}
+	context["clips"][1] = {
+		"_id": 1,
+		"portion": [20, 30],
+		"clip": selected.subclip(20, 30)
+	}
+	# Adding audio for test
+	context["audio"][0] = {
+		"name": "myaudio",
+		"path": "/home/needle/Downloads/example.mp3"
+	}
+
 def chooseFile():
 	import  tkinter as tk
 	from tkinter import filedialog
@@ -40,7 +69,7 @@ def clearData(debug = False):
 		while bool(l_clips):
 			print("Clear Clips".center(40, "-"))
 			for i,j in l_clips.items():
-				print(f"{i}: {j.get('name')}")
+				print(f"{i}: {context.get('videos').get(j.get('_id')).get('name')}")
 			_ = None
 			while _ not in l_clips.keys():
 				try:
@@ -132,7 +161,7 @@ def displayOptions(op, title):
 		i+=1
 
 	_ = None
-	print("".center(40, "-")+"\n")
+	print("\n"+"".center(40, "-")+"\n")
 	while(not _ or _ < 1 or _ > len(op)+1):
 		try:
 			_ = int(input("Enter valid option\n=>"))
