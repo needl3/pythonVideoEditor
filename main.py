@@ -5,7 +5,7 @@ from video import addVideo, concatenateVideo, clipVideo
 from audio import addAudio
 from render import render
 from filter import applyFilter, resizeClip
-from utils.utils import clearData, displayOptions, addTest
+from utils.utils import clearData, displayOptions, addTest, showStatus
 
 from moviepy.editor import VideoFileClip
 
@@ -51,8 +51,10 @@ def menu():
             case 7:
                 clearData()
             case 8:
-                print("Thank you for using!")
+                showStatus()
             case 9:
+                print("Thank you for using!")
+            case 10:
                 print(context)
             case _:
                 print("Invalid input")

@@ -2,6 +2,7 @@ import os
 from utils.context import context
 import  tkinter as tk
 from tkinter import filedialog
+from moviepy.editor import VideoFileClip
 
 def addTest():
 	# Adding videos for test
@@ -169,3 +170,37 @@ def displayOptions(op, title):
 			print("Invalid option chosen")
 	
 	return _
+
+def showStatus():
+	PADDING = 70
+	l_vids = context.get("videos")
+	if bool(l_vids):
+		print("Added Videos".center(PADDING, "-"))
+		for i,j in l_vids.items():
+			print(f"\t{i}: Name: {j.get('name')}\n\t\tPath: {j.get('path')}")
+		print("-"*PADDING, "\n")
+
+	l_clips = context.get("clips")
+	if bool(l_clips):
+		print("Extracted Clips".center(PADDING, "-"))
+		for i,j in l_clips.items():
+			print(f"\t{i}: Origin: {l_vids.get(j.get('_id')).get('name')}")
+			print(f"\t\tPortion: {j.get('portion')}")
+			print(f"\t\tFilters: {j.get('filters')}")
+		print("-"*PADDING, "\n")
+
+	l_audio = context.get("audio")
+	if bool(l_audio):
+		print("Added audio".center(PADDING, "-"))
+		for i,j in l_audio.items():
+			print(f"\t{i}: Name: {j.get('name')}\n\t\tPath: {j.get('path')}")
+		print("-"*PADDING, "\n")
+
+	l_concat = context.get("concat")
+	if bool(l_concat):
+		print("Concatenation Sequence".center(PADDING, "-"), end="\n\t")
+		for i in l_concat:
+			print(f"-> [Clip {i}] ", end="")
+		print("\n", "-"*PADDING, "\n")
+
+	input("Press Enter to go to main menu...")

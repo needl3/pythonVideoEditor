@@ -9,6 +9,7 @@ def void():
 	pass
 
 def applyFilter():
+
 	c = context.get("clips")
 	if not bool(c):
 		print("No clips added to apply filter to")
@@ -25,6 +26,10 @@ def applyFilter():
 		_id = int(input("Invalid id. Select again:\n=>"))
 
 	# Now select a filter to apply
+	try:
+		context["clips"][_id]["filters"]
+	except KeyError:
+		context["clips"][_id]["filters"] = []
 	return chooseFilter(_id)
 
 def chooseFilter(_id):
@@ -88,6 +93,10 @@ def overlayAudio(_id):
 	audio = AudioFileClip(context.get("audio").get(_).get("path")).subclip(0, clip.duration)
 	context["clips"][_id]["clip"] = clip.set_audio(audio)
 
+	context["clips"][_id]["filters"].append(overlayAudio.__name__)
+
+	return 0
+
 def applyCrop(_id):
 	clip = context.get("clips").get(_id).get("clip")
 
@@ -98,6 +107,9 @@ def applyCrop(_id):
 	clip = clip.crop(x1=x1, y1=y1, x2=x2, y2=y2)
 	
 	context["clips"][_id]["clip"] = clip
+
+	context["clips"][_id]["filters"].append(applyCrop.__name__)
+
 	return 0
 
 
@@ -113,12 +125,16 @@ def applyFade(_id, out=False):
 		except ValueError:
 			pass
 
+
 	if out:
 		clip = clip.fx(vfx.fadeout, _)
+		context["clips"][_id]["filters"].append("fadeOut")
 	else:
 		clip = clip.fx(vfx.fadein, _)
+		context["clips"][_id]["filters"].append("fadeIn")
 
 	context["clips"][_id]["clip"] = clip
+
 	return 0
 
 def changeSpeed(_id):
@@ -133,6 +149,9 @@ def changeSpeed(_id):
 	clip = clip.speedx(factor=_)
 
 	context["clips"][_id]["clip"] = clip
+
+	context["clips"][_id]["filters"].append(changeSpeed.__name__)
+
 	return 0
 
 def reverseClip(_id):
@@ -141,6 +160,8 @@ def reverseClip(_id):
 	clip = vfx.time_mirror(clip)
 
 	context["clips"][_id]["clip"] = clip
+
+	context["clips"][_id]["filters"].append(reverseClip.__name__)
 	return 0
 
 def rotateClip(_id):
@@ -155,6 +176,8 @@ def rotateClip(_id):
 	clip = clip.add_mask().rotate(_)
 
 	context["clips"][_id]["clip"] = clip
+
+	context["clips"][_id]["filters"].append(rotateClip.__name__)
 	return 0
 
 def resizeClip(_id):
@@ -208,6 +231,9 @@ def resizeClip(_id):
 
 
 	context["clips"][_id]["clip"] = clip
+
+	context["clips"][_id]["filters"].append(resizeClip.__name__)
+
 	return 0
 
 def paintClip(_id):
@@ -227,12 +253,18 @@ def paintClip(_id):
 	clip = clip.fx(vfx.painting, _)
 
 	context["clips"][_id]["clip"] = clip
+
+	context["clips"][_id]["filters"].append(paintClip.__name__)
+
 	return 0
 
 def removeAudio(_id):
 	clip = context.get("clips").get(_id).get("clip")
 
 	context["clips"][_id]["clip"] =  clip.without_audio()
+
+	context["clips"][_id]["filters"].append(applyFade.__name__)
+
 	return 0
 
 def addText(_id):
@@ -243,3 +275,6 @@ def addText(_id):
 	# Set position
 	# Preview
 	# Done
+	context["clips"][_id]["filters"].append(addText.__name__)
+
+	return 0
