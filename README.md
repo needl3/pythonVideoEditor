@@ -3,6 +3,15 @@
 This python script will help you download videos from different sources and do basic editing in then.
 Below is the comprehensive usage manual
 
+## Installation Instructions
+Make sure you have `python` and `pip` installed
+
+### Install prerequisites
+Type `pip install -r requirements.txt` in `cmd` from this folder to install necessary programs to run this script
+
+### Run the script
+Type `python main.py` to run the script
+
 ## Basic Functionalities
 
 `----------------------------Menu----------------------------
