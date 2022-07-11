@@ -26,12 +26,12 @@ def addVideo():
 			case 3:
 				path = downloadFromTiktok(import_name)
 			case 4:
-				path = textToClip(input("Enter text to render"),\
+				path = textToClip(input("Enter text to render\n=>"),\
 					import_name,\
-					input("Enter background color(Default: Black)") or "#000000",\
-					input("Enter text color(Default: White)") or "#ffffff",\
-					input("Enter clip length in seconds(Default: 5s)") or 5,\
-					input("Enter font size(Default: 1)") or 1\
+					input("Enter background color(Default: Black)\n=>") or "#000000",\
+					input("Enter text color(Default: White)\n=>") or "#ffffff",\
+					input("Enter clip length in seconds(Default: 5s)\n=>") or 5,\
+					input("Enter font size(Default: 1)\n=>") or 1\
 					)
 			# case 4:
 			# 	path = downloadFromInstagram(import_name)

@@ -1,6 +1,6 @@
 import datetime
 from .utils import displayOptions
-
+import os
 DOWNLOAD_DIR = "downloaded_vids"
 
 def downloadFromTiktok(name):

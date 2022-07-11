@@ -41,14 +41,14 @@ class RenderText2Image:
 	
 	def setFontSize(self):
 		fontsize = 1
-		img_fraction = self._fontSize
+		img_fraction = float(self._fontSize)
 		try:
 			self._font = ImageFont.truetype(self.FULL_PATH_TO_FONT, fontsize)
 			while self._font.getsize(self._text)[0] < img_fraction * self._img.size[0]:
 				fontsize += 1
 				self._font = ImageFont.truetype(self.FULL_PATH_TO_FONT, fontsize)
-		except Exception:
-			print("ERROR WITH FONT")
+		except Exception as e:
+			print("ERROR WITH FONT", e)
 			
 		self.addText2Image()
 	
@@ -100,5 +100,6 @@ class ImageToVideo:
 		return self.output
 
 def textToClip(text, output, bgColor='#000000', fontColor='#FFFFFF', sec=5, fontSize=1):
+	print("Received: ", text, output, bgColor, fontColor, sec, fontSize)
 	frame = RenderText2Image(text=text, bgColor=bgColor, fontColor=fontColor, fontSize=fontSize).getImage()
 	return ImageToVideo(output).generate_frames(frame, sec)
