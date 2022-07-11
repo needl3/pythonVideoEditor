@@ -103,7 +103,12 @@ def applyCrop(_id):
 	#
 	# TODO: Make a function to get a random frame within limits
 	#
-	x1, y1, x2, y2 = crop(clip.get_frame(10))
+	try:
+		x1, y1, x2, y2 = crop(clip.get_frame(10))
+	except:
+		print("Cannot crop the clip. Make sure no filters were applied on it till now.")
+		input("Press enter to return...")
+		return 1
 	clip = clip.crop(x1=x1, y1=y1, x2=x2, y2=y2).resize(width=abs(x1-x2))
 	
 	context["clips"][_id]["clip"] = clip
@@ -173,7 +178,12 @@ def rotateClip(_id):
 			_ = float(input("Enter angle of rotation\n=>"))
 		except ValueError:
 			print("invalid input")
-	clip = clip.add_mask().rotate(_)
+	try:
+		clip = clip.add_mask().rotate(_)
+	except:
+		print("Rotation failed. Make sure to not apply any other filters before applying this.")
+		input("Press enter to return")
+		return 1
 
 	context["clips"][_id]["clip"] = clip
 
