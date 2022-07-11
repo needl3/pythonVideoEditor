@@ -1,5 +1,5 @@
 import os
-from utils.context import context
+from utils.context import context, CLEAR
 import  tkinter as tk
 from tkinter import filedialog
 from moviepy.editor import VideoFileClip
@@ -48,7 +48,7 @@ def parseDuration(durationStr):
 		return 0
 
 def clearData(debug = False):
-	os.system("clear")
+	os.system(CLEAR)
 	def clearVideo():
 		while True:
 			print("Clear Video".center(40, "-"))
@@ -147,7 +147,7 @@ def clearData(debug = False):
 			case _:
 				print("Invalid option. Going back..")
 
-		os.system("clear")
+		os.system(CLEAR)
 
 def displayOptions(op, title):
 	PADDING = 60

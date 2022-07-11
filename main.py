@@ -9,7 +9,7 @@ from utils.utils import clearData, displayOptions, addTest, showStatus
 
 from moviepy.editor import VideoFileClip
 
-from utils.context import context
+from utils.context import context, CLEAR
 
 def dot(width, msg):
     if(width < len(msg)):
@@ -32,7 +32,7 @@ def menu():
 
     _ = None
     while _ != len(op):
-        os.system("clear")
+        os.system(CLEAR)
         _ = displayOptions(op, "Menu")
 
         match _:

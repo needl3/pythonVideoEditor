@@ -2,13 +2,13 @@ import os
 from moviepy.editor import VideoFileClip
 from utils.utils import parseDuration, displayOptions, chooseFile
 
-from utils.context import context
+from utils.context import context, CLEAR
 from utils.videoDownloader import downloadFromYT, downloadFromTiktok, downloadFromInstagram
 from videoMaker import textToClip
 
 def addVideo():
 	while True:
-		os.system("clear")
+		os.system(CLEAR)
 
 		o = ["Import from disk", "Import from YouTube", "Import from TikTok", "Create from Text", "Back"]
 #		o = ["Import from disk", "Import from YouTube", "Import from TikTok", "Import from Instagram", "Import from Facebook", "Back"]

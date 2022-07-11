@@ -2,7 +2,7 @@ from utils.Crop import crop
 import os
 from moviepy.editor import vfx, AudioFileClip, TextClip, CompositeVideoClip
 
-from utils.context import context
+from utils.context import context, CLEAR
 from utils.utils import displayOptions
 
 def void():
@@ -39,7 +39,7 @@ def chooseFilter(_id):
 	
 	_ = None
 	while True:
-		os.system("clear")
+		os.system(CLEAR)
 
 		# Select a filter
 		# This problem is because applying filters corrupts raw data

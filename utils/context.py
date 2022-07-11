@@ -1,3 +1,5 @@
+import os
+
 # This file contains global variables
 context ={
     "videos":dict(),
@@ -5,3 +7,5 @@ context ={
     "clips":dict(),
     "concat":list()
 }
+
+CLEAR = "cls" if "nt" in os.name else "clear"
