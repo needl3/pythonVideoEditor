@@ -63,7 +63,7 @@ Supported filters/edits:
 	- `RemoveAudio` from the clip(Removes entire audio including the one being overlayed. So, advised to first remove audio then apply other overlaying audio)
 
 `Note while using Filters:
-Donot crop after applying filters. If you have to crop the clip. First crop and then apply needed filters`
+Donot crop after applying filters. If you have to crop the clip. First crop and then apply needed filters to avoid crashes`
 
 ### Concatenate clips
 Sequence clips to be rendered. The position of clip in the concatenation sequence will determine the clip's queue.

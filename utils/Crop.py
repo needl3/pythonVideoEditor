@@ -35,7 +35,11 @@ def displayImage(screen, px, topleft, prior):
 
 def setup(img_np):
 #    px = pygame.image.load(path)
-    px = pygame.image.frombuffer(img_np.tostring(), img_np.shape[1::-1], "RGB")
+    px = None
+    try:
+        px = pygame.image.frombuffer(img_np.tostring(), img_np.shape[1::-1], "RGB")
+    except ValueError:
+        px = pygame.image.frombuffer(img_np.tostring(), img_np.shape[1::-1], "RGBA")
     screen = pygame.display.set_mode( px.get_rect()[2:] )
     screen.blit(px, px.get_rect())
     pygame.display.flip()

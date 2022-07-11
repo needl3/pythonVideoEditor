@@ -104,7 +104,7 @@ def applyCrop(_id):
 	# TODO: Make a function to get a random frame within limits
 	#
 	x1, y1, x2, y2 = crop(clip.get_frame(10))
-	clip = clip.crop(x1=x1, y1=y1, x2=x2, y2=y2)
+	clip = clip.crop(x1=x1, y1=y1, x2=x2, y2=y2).resize(width=abs(x1-x2))
 	
 	context["clips"][_id]["clip"] = clip
 
