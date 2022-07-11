@@ -1,5 +1,6 @@
-from utils.context import context
+from utils.context import context, CLEAR
 from utils.utils import displayOptions, chooseFile
+import os
 
 def void():
 	pass
@@ -22,11 +23,12 @@ def addAudio():
 	
 
 	while True:
-		_ = displayOptions(op, "Import Audio")
-		match _:
+		os.system(CLEAR)
+		_op = displayOptions(op, "Import Audio")
+		match _op:
 			case 1:
 				importFromDisk()
 			case 2:
 				return 0
-			case _:
+			case _op:
 				print("Invalid input")

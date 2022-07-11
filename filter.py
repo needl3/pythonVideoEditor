@@ -21,9 +21,13 @@ def applyFilter():
 		print(f"{i}: Clip ",j.get("portion"), " of ", context.get("videos").get(j.get("_id")).get("name"))
 
 	# First select a clip to apply filters
-	_id = int(input("Select clip to apply filter to:\n=>"))
+	_id = None
 	while _id not in c.keys():
-		_id = int(input("Invalid id. Select again:\n=>"))
+		try:
+			_id = int(input("Select valid clip id:\n=>"))
+		except:
+			print("Invalid id chosen")
+
 
 	# Now select a filter to apply
 	try:
@@ -37,7 +41,7 @@ def chooseFilter(_id):
 	"reverseClip", "rotateClip", "resizeClip", "addText",\
 	"paintClip", "overlayAudio", "removeAudio", "Back"]
 	
-	_ = None
+	_op = None
 	while True:
 		os.system(CLEAR)
 
@@ -45,9 +49,9 @@ def chooseFilter(_id):
 		# This problem is because applying filters corrupts raw data
 		# Maybe because it does internal compressions
 		print("Note: Do not crop after applying any of the filter.\nIf you need to crop, then crop first and apply other filters")
-		_ = displayOptions(f, "Select Filters")
+		_op = displayOptions(f, "Select Filters")
 
-		match _:
+		match _op:
 			case 1:
 				applyFade(_id)
 			case 2:
@@ -84,13 +88,13 @@ def overlayAudio(_id):
 	for i,j in context.get("audio").items():
 		print(f"{i+1}: {j.get('name')}")
 
-	_ = None
-	while _ not in context.get("audio").keys():
+	_op = None
+	while _op not in context.get("audio").keys():
 		try:
-			_ = int(input("Select Audio to apply\n=>"))-1
+			_op = int(input("Select Audio to apply\n=>"))-1
 		except ValueError:
 			print("Invalid input")
-	audio = AudioFileClip(context.get("audio").get(_).get("path")).subclip(0, clip.duration)
+	audio = AudioFileClip(context.get("audio").get(_op).get("path")).subclip(0, clip.duration)
 	context["clips"][_id]["clip"] = clip.set_audio(audio)
 
 	context["clips"][_id]["filters"].append(overlayAudio.__name__)
@@ -121,21 +125,21 @@ def applyCrop(_id):
 def applyFade(_id, out=False):
 	clip = context.get("clips").get(_id).get("clip")
 	try:
-		_ = float(input("Enter fade length(seconds)\n=>"))
+		_op = float(input("Enter fade length(seconds)\n=>"))
 	except ValueError:
 		pass
-	while type(_) != float:
+	while type(_op) != float:
 		try:
-			_ = float(input("Invalid input: Enter again\n=>"))
+			_op = float(input("Invalid input: Enter again\n=>"))
 		except ValueError:
 			pass
 
 
 	if out:
-		clip = clip.fx(vfx.fadeout, _)
+		clip = clip.fx(vfx.fadeout, _op)
 		context["clips"][_id]["filters"].append("fadeOut")
 	else:
-		clip = clip.fx(vfx.fadein, _)
+		clip = clip.fx(vfx.fadein, _op)
 		context["clips"][_id]["filters"].append("fadeIn")
 
 	context["clips"][_id]["clip"] = clip
@@ -145,13 +149,13 @@ def applyFade(_id, out=False):
 def changeSpeed(_id):
 	clip = context.get("clips").get(_id).get("clip")
 
-	_ = None
-	while(not _ or type(_) != float):
+	_op = None
+	while(not _op or type(_op) != float):
 		try:
-			_ = float(input("Enter a factor by which to change speed\n=>"))
+			_op = float(input("Enter a factor by which to change speed\n=>"))
 		except ValueError:
 			print("Invalid input")
-	clip = clip.speedx(factor=_)
+	clip = clip.speedx(factor=_op)
 
 	context["clips"][_id]["clip"] = clip
 
@@ -172,14 +176,14 @@ def reverseClip(_id):
 def rotateClip(_id):
 	clip = context.get("clips").get(_id).get("clip")
 
-	_ = None
-	while(not _ or type(_) != float):
+	_op = None
+	while(not _op or type(_op) != float):
 		try:
-			_ = float(input("Enter angle of rotation\n=>"))
+			_op = float(input("Enter angle of rotation\n=>"))
 		except ValueError:
 			print("invalid input")
 	try:
-		clip = clip.add_mask().rotate(_)
+		clip = clip.add_mask().rotate(_op)
 	except:
 		print("Rotation failed. Make sure to not apply any other filters before applying this.")
 		input("Press enter to return")
@@ -195,9 +199,9 @@ def resizeClip(_id):
 
 	def parseResizeInput(inp):
 		if "," in inp:
-			_ = inp.split(",")
-			if(len(_) == 2):
-				width, height = _
+			_op = inp.split(",")
+			if(len(_op) == 2):
+				width, height = _op
 				if width and not height:
 					return ("w", width)
 				elif height and not width:
@@ -215,29 +219,29 @@ def resizeClip(_id):
 				return None
 
 
-	_ = None
-	while _ == None:
-		_ = parseResizeInput(input("Enter new size as:\
+	_op = None
+	while _op == None:
+		_op = parseResizeInput(input("Enter new size as:\
 									\n1. width, height => Changes both\
 									\n2. ,height => Changes height and adjusts width automatically\
 									\n3. 0.0 - 1.0 => Computes new size based on original size and resize factor\
 									\n=>"))
-		if _ == None:
+		if _op == None:
 			print("Invalid input")
 			return None
-		elif type(_) == float:
-			clip = clip.resize(_)
-		elif len(_) == 2:
-			match _[0]:
+		elif type(_op) == float:
+			clip = clip.resize(_op)
+		elif len(_op) == 2:
+			match _op[0]:
 				case "w":
-					clip = clip.resize(width=_[1])
+					clip = clip.resize(width=_op[1])
 				case "h":
-					clip = clip.resize(height=_[1])
+					clip = clip.resize(height=_op[1])
 				case "b":
-					clip = clip.resize(_[1])
+					clip = clip.resize(_op[1])
 				case _:
 					print("Invalid input")
-					_ = None
+					_op = None
 
 
 	context["clips"][_id]["clip"] = clip
@@ -249,18 +253,18 @@ def resizeClip(_id):
 def paintClip(_id):
 	clip = context.get("clips").get(_id).get("clip")
 
-	_ = None
-	while not _ or type(_) != float:
+	_op = None
+	while not _op or type(_op) != float:
 		try:
-			_ = input("Enter paint saturation strength(default: 1.4):\n=>")
-			if not bool(_):
-				_ = 1.4
+			_op = input("Enter paint saturation strength(default: 1.4):\n=>")
+			if not bool(_op):
+				_op = 1.4
 				break
 			else:
 				raise ValueError
 		except ValueError:
 			print("Invalid input")
-	clip = clip.fx(vfx.painting, _)
+	clip = clip.fx(vfx.painting, _op)
 
 	context["clips"][_id]["clip"] = clip
 

@@ -50,18 +50,19 @@ def parseDuration(durationStr):
 def clearData(debug = False):
 	os.system(CLEAR)
 	def clearVideo():
-		while True:
+		l_videos = context.get("videos")
+		while bool(l_videos):
 			print("Clear Video".center(40, "-"))
-			for i,j in context.get("videos").items():
+			for i,j in l_videos.items():
 				print(f"{i}: {j.get('name')}")
-			_ = None
-			while not _ or _ not in context.get("videos").keys():
+			_op = None
+			while _op not in l_videos.keys():
 				try:
-					_ = int(input("Enter video id to remove\n=>"))
-				except:
+					_op = int(input("Enter video id to remove\n=>"))
+				except ValueError:
 					print("Invalid input")
 
-			del context["videos"][_]
+			del context["videos"][_op]
 
 			if input("Remove another?(Y/N)\n=>").lower() != "y":
 				break
@@ -70,18 +71,23 @@ def clearData(debug = False):
 		while bool(l_clips):
 			print("Clear Clips".center(40, "-"))
 			for i,j in l_clips.items():
-				print(f"{i}: {context.get('videos').get(j.get('_id')).get('name')}")
-			_ = None
-			while _ not in l_clips.keys():
+				origin = None
 				try:
-					_ = int(input("Enter clip id to remove\n=>"))
+					origin = context.get('videos').get(j.get('_id')).get('name')
+				except:
+					origin = "Deleted Origin"
+				print(f"{i}: {origin}")
+			_op = None
+			while _op not in l_clips.keys():
+				try:
+					_op = int(input("Enter clip id to remove\n=>"))
 				except:
 					print("Invalid input")
 					return 1
 
-			del context["clips"][_]
-			if _ in context.get("concat"):
-				del context["concat"][_]
+			del context["clips"][_op]
+			if _op in context.get("concat"):
+				del context["concat"][_op]
 
 			if input("Remove another?(Y/N)\n=>").lower() != "y":
 				break
@@ -91,15 +97,15 @@ def clearData(debug = False):
 			print("Clear from Concatenation queue".center(40, "-"))
 			for i in l_concat:
 				print(f"{i}: {context.get('videos').get(context.get('clips').get(i).get('_id')).get('name')} from {context.get('clips').get(i).get('portion')}")
-			_ = None
-			while _ not in l_concat and _ != l_concat[-1]+1:
+			_op = None
+			while _op not in l_concat and _op != l_concat[-1]+1:
 				try:
-					_ = int(input("Enter clip id to remove\n=>"))
+					_op = int(input("Enter clip id to remove\n=>"))
 				except:
 					print("Invalid input")
 					return
 
-			del context["concat"][l_concat.index(_)]
+			del context["concat"][l_concat.index(_op)]
 
 			if input("Remove another?(Y/N)\n=>").lower() != "y":
 				break
@@ -110,15 +116,15 @@ def clearData(debug = False):
 			print("Clear Audio".center(40, "-"))
 			for i,j in l_audio.items():
 				print(f"{i}: {j.get('name')}")
-			_ = None
-			while _ not in l_audio.keys():
+			_op = None
+			while _op not in l_audio.keys():
 				try:
-					_ = int(input("Enter clip id to remove\n=>"))
+					_op = int(input("Enter clip id to remove\n=>"))
 				except:
 					print("Invalid input")
 					return 1
 
-			del context["audio"][_]
+			del context["audio"][_op]
 			
 			if input("Remove another?(Y/N)\n=>").lower() != "y":
 				break
@@ -126,9 +132,9 @@ def clearData(debug = False):
 	while True:
 		op = ["Video List", "Clip List", "Concatenation List", "Audio List", "All Data", "Back"]
 
-		_ = displayOptions(op, "Clear data")
+		_op = displayOptions(op, "Clear data")
 
-		match _:
+		match _op:
 			case 1:
 				clearVideo()
 			case 2:
@@ -162,15 +168,15 @@ def displayOptions(op, title):
 		print(str(i+1) + ": "+op[i])
 		i+=1
 
-	_ = None
+	_op = None
 	print("\n"+"".center(PADDING, "-")+"\n")
-	while(not _ or _ < 1 or _ > len(op)+1):
+	while(not _op or _op < 1 or _op > len(op)+1):
 		try:
-			_ = int(input("Enter valid option\n=>"))
+			_op = int(input("Enter valid option\n=>"))
 		except ValueError:
 			print("Invalid option chosen")
 	
-	return _
+	return _op
 
 def showStatus():
 	PADDING = 70
@@ -185,7 +191,10 @@ def showStatus():
 	if bool(l_clips):
 		print("Extracted Clips".center(PADDING, "-"))
 		for i,j in l_clips.items():
-			print(f"\t{i}: Origin: {l_vids.get(j.get('_id')).get('name')}")
+			try:
+				print(f"\t{i}: Origin: {l_vids.get(j.get('_id')).get('name')}")
+			except:
+				print(f"\t{i}: Origin: Deleted")
 			print(f"\t\tPortion: {j.get('portion')}")
 			print(f"\t\tFilters: {j.get('filters')}")
 		print("-"*PADDING, "\n")

@@ -30,12 +30,12 @@ def menu():
 
     # addTest()
 
-    _ = None
-    while _ != len(op):
+    _op = None
+    while _op != len(op):
         os.system(CLEAR)
-        _ = displayOptions(op, "Menu")
+        _op = displayOptions(op, "Menu")
 
-        match _:
+        match _op:
             case 1:
                 addVideo()
             case 2:

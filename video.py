@@ -13,12 +13,12 @@ def addVideo():
 		o = ["Import from disk", "Import from YouTube", "Import from TikTok", "Create from Text", "Back"]
 #		o = ["Import from disk", "Import from YouTube", "Import from TikTok", "Import from Instagram", "Import from Facebook", "Back"]
 
-		_ = displayOptions(o, "Import Videos")
+		_op = displayOptions(o, "Import Videos")
 
 		path = str()
-		if _ > 0 and _ < len(o):
+		if _op > 0 and _op < len(o):
 			import_name = input("Enter name for the import:\n=>")
-		match _:
+		match _op:
 			case 1:
 				path = chooseFile()
 			case 2:
@@ -62,9 +62,12 @@ def clipVideo():
 	for i,j in vids.items():
 		print(f"{i}: {vids.get(i).get('name')}")
 	
-	_id = int(input("Select video to clip:\n=>"))
+	_id = None
 	while _id not in vids.keys():
-		_id = int(input("Invalid id. Select again:\n=>"))
+		try:
+			_id = int(input("Select valid option:\n=>"))
+		except:
+			print("Invalid Input")
 
 	selected = VideoFileClip(vids.get(_id).get("path"))
 
@@ -90,16 +93,25 @@ def clipVideo():
 
 def concatenateVideo():
 	c = context.get("clips")
+	if not bool(c):
+		print("No clips to concatenate... Going back")
+		return 1
+		
 	for i,j in c.items():
-		print(f"{i}: Clip ",j.get("portion"), " of ", context.get("videos").get(j.get("_id")).get("name"))
+		origin = None
+		try:
+			context.get("videos").get(j.get("_id")).get("name")
+		except:
+			origin = "Deleted origin"
+		print(f"{i}: Clip ",j.get("portion"), " of ", origin)
 
 	while True:
-		_id = int(input("Select clip in sequence to concatenate:\n=>"))
-		while _id not in c.keys():
-			try:
-				_id = int(input("Invalid id. Select again:\n=>"))
-			except ValueError:
-				return
+		try:
+			_id = int(input("Select clip in sequence to concatenate:\n=>"))
+		except:
+			print("Invalid input")
+			continue
+
 		context["concat"].append(_id)
 		if input("Add more?(y/n)").lower() == "n":
 			break
