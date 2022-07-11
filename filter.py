@@ -1,6 +1,6 @@
 from utils.Crop import crop
 import os
-from moviepy.editor import vfx, AudioFileClip
+from moviepy.editor import vfx, AudioFileClip, TextClip, CompositeVideoClip
 
 from utils.context import context
 from utils.utils import displayOptions
@@ -272,9 +272,44 @@ def addText(_id):
 
 	# Set color from list
 	# Set message(simple one line)
+	size = None
+	while not size:
+		try:
+			size = float(input("Enter font size\n=>"))
+		except:
+			print("Invalid input")
+
+	print("Available Primary Colors:")
+	colors = ["black", "white", "blue", "green", "orange", "red", "purple"]
+	for i in colors:
+		print(i, end=", ")
+	print("\n")
+	c = None
+	while c not in [i.decode() for i in TextClip.list("color")]:
+		c = input("Enter valid text color:\n=>")
+
+	t = TextClip(input("Enter text to add:\n=>"), fontsize=size, color=c)
 	# Set position
-	# Preview
+	pos = None
+	dur = None
+	while not pos:
+		try:
+			pos = input("Enter text position in (x,y) or from the list: [center, bottom, top]\n=>")
+			if pos not in ["center", "bottom", "top"]:
+				raise TypeError
+		except:
+			print("Invalid input")
+
+	while not dur:
+		try:
+			dur = float(input("Enter clip duration\n=>"))
+		except:
+			print("Invalid Input")
+
+	t = t.set_pos(pos).set_duration(dur)
+
 	# Done
+	context["clips"][_id]["clip"] = CompositeVideoClip([clip, t])
 	context["clips"][_id]["filters"].append(addText.__name__)
 
 	return 0
